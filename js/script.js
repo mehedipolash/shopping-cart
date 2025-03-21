@@ -113,46 +113,51 @@ document.getElementById('add-to-cart').addEventListener('click', function () {
 });
 
 document.getElementById('checkout-btn').addEventListener('click', function () {
-  
   const cartModal = document.getElementById('cart-modal');
-
   const cartContainer = document.getElementById('cart-items');
 
-  for (let i = 0; i < cartItems.length; i++){
+  // Clear existing content first
+  cartContainer.innerHTML = '';
 
+  let totalQuantity = 0;
+  let totalAmount = 0;
+
+  // Create item rows and calculate totals
+  for (let i = 0; i < cartItems.length; i++) {
     const item = cartItems[i];
-    const row = document.createElement('tr');
-    row.classList.add('border-b')
+    totalQuantity += item.quantity;
+    totalAmount += item.price;
 
+    const row = document.createElement('tr');
+    row.classList.add('border-b');
     row.innerHTML = `
       <td class='px-4 py-2'>
-    <div class='flex items-center space-x-2' >
-
-     <img class='h-12 w-12 object-cover rounded-md' src=" ${productImageBase}${item.image}" alt="">
-     
-     <span class='font-semibold'>${item.title}</span>
-
-    
-    
-    </div>
-      
+        <div class='flex items-center space-x-2'>
+          <img class='h-12 w-12 object-cover rounded-md' src="${productImageBase}${item.image}" alt="">
+          <span class='font-semibold'>${item.title}</span>
+        </div>
       </td>
-
-     <td class='px-4 py-2'>${item.color}</td>
+      <td class='px-4 py-2'>${item.color}</td>
       <td class='px-4 py-2'>${item.size}</td>
       <td class='px-4 py-2'>${item.quantity}</td>
       <td class='px-4 py-2'>$${item.price}</td>
-     
-    
     `;
-    cartContainer.appendChild(row)
+    cartContainer.appendChild(row);
   }
 
+  // Add total row
+  const totalRow = document.createElement('tr');
+  totalRow.classList.add('border-t');
+  totalRow.innerHTML = `
+    <td colspan="3" class="px-4 py-2 font-bold">Total</td>
+    <td class="px-4 py-2 font-bold">${totalQuantity}</td>
+    <td class="px-4 py-2 font-bold">$${totalAmount}</td>
+  `;
+  cartContainer.appendChild(totalRow);
 
-
-
+  // Show modal
   cartModal.classList.remove('hidden');
-})
+});
 
 document.getElementById('continue-shopping').addEventListener('click', function () {
   document.getElementById('cart-modal').classList.add('hidden');
