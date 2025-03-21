@@ -9,12 +9,10 @@ for (let i = 0; i < ringButtons.length; i++) {
 
   ringBtn.addEventListener('click', function (event) {
     
-    const color = event.target.id.replace('-color','')
-    console.log(color);
+    
 
      for (let j = 0; j < ringButtons.length; j++) {
        ringButtons[j].classList.remove('border-red-500');
-       
      }
 
  
@@ -27,7 +25,10 @@ for (let i = 0; i < ringButtons.length; i++) {
     
     
 
-    //dynamically add color
+    //dynamically change product-image
+    //easiest way to dynamically changed
+    const color = event.target.id.replace('-color', '');
+    console.log(color);
     productImage.src = "../images/" + color + ".png";
   });
 }
@@ -37,19 +38,37 @@ for (let i = 0; i < ringButtons.length; i++) {
 function selectWristSize(size) {
   
   //console.log(size)
-  const sizes = ['M', 'L', 'S', 'XL']
+  const objects = ['M', 'L', 'S', 'XL']
 
-  for (object of sizes) {
+  for (object of objects) {
     const element = object;
 
     const button = document.getElementById('size-' + element);
 
     if (size === element) {
-      button.classList.add('border-purple-600');
+      button.classList.add('border-yellow-600');
+    } else {
+      button.classList.remove('border-yellow-600');
     }
-    else {
-      button.classList.remove('border-purple-600');
-    }
-    
   }
+}
+
+
+// increment / decrement related code for products
+const quantityElements = document.querySelectorAll('.quantity-button');
+
+for (let btn of quantityElements) {
+  console.log(btn)
+  btn.addEventListener('click', function (event) {
+   //console.log(event.target)
+   const amount = event.target.innerText === '+' ? 1 : -1;
+
+
+   const quantityElement = document.getElementById('quantity'); 
+   const currentQuantity = parseInt(quantityElement.innerText); //0
+   const newQuantity = Math.max(0, currentQuantity + amount);
+
+   
+   quantityElement.innerText = newQuantity;
+ });
 }
